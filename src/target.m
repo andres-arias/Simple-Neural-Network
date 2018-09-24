@@ -12,9 +12,10 @@ function y=target(W1,W2,X,Y)
 #     equal to 1
 # Y:  labels of the training set
     
+    # TODO: Check if euclidean norm is required.
     y_pred = predict(W1, W2, X);
     difference = Y - y_pred;
     squared = difference .* difference;
-    y = 0.5 * sum(squared');
+    y = sum(0.5 * sum(squared'));
   
 endfunction;
