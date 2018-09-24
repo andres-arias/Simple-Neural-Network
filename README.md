@@ -2,7 +2,7 @@
 Simple (one hidden layer) neural network in GNU/Octave.
 
 The following project illustrates a simple neural network
-implemented using GNU/Octave and related packages (suck as `optim`).
+implemented using GNU/Octave and related packages (such as `optim`).
 
 This neural network is trained using a generated trainig set, as
 provided by the `create_data.m` program.
