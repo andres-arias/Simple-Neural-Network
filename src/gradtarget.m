@@ -1,8 +1,11 @@
 function [gW1,gW2]=gradtarget(W1,W2,X,Y)
-
 # usage gradtarget(W1,W2,X,Y)
 # 
-# This function evaluates the gradient of the target function on W1 and W2.
+# This function evaluates the gradient of the target function on W1 and W2 
+# using Backpropagation.
+# 
+# Based on Christopher M. Bishop's method as described on "Neural Networks
+# for Pattern Recognition".
 # 
 # W1: weights matrix between input and hidden layer
 # W2: weights matrix between the hidden and the output layer
