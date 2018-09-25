@@ -1,8 +1,11 @@
 function [gW1,gW2]=gradtarget(W1,W2,X,Y)
-
 # usage gradtarget(W1,W2,X,Y)
 # 
-# This function evaluates the gradient of the target function on W1 and W2.
+# This function evaluates the gradient of the target function on W1 and W2 
+# using Backpropagation.
+# 
+# Based on Christopher M. Bishop's method as described on "Neural Networks
+# for Pattern Recognition".
 # 
 # W1: weights matrix between input and hidden layer
 # W2: weights matrix between the hidden and the output layer
@@ -28,6 +31,7 @@ function [gW1,gW2]=gradtarget(W1,W2,X,Y)
     error_out = Y - Y_out; 
     # Error in the hidden layer:
     error_hidden = sigmoidPrim(sigmoid1) .* (error_out * W2(:, 2:end)); # Not counting the bias.
+    #error_hidden = sigmoidPrim(sigmoid1) .* (error_out * W2); # Not counting the bias.
 
     m = rows(X) # Normalization factor
 
@@ -36,6 +40,10 @@ function [gW1,gW2]=gradtarget(W1,W2,X,Y)
     gW2 = (error_out' * sigmoid1) ./ m; 
 
 endfunction;
+
+function y=sigmoid(x)
+    y = 1 ./ (1 + e.^-x);
+endfunction
 
 function y=sigmoidPrim(x)
     y = (1 - x) .* x;
