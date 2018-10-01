@@ -21,6 +21,7 @@ function [W1, W2]=training(W1, W2, X, Y, lambda, batchSize)
     loops = 0; # Iteration counter.
 
     X= [ones(rows(X), 1), X];
+    w = packweight(W1, W2);
 
     XY = [X, Y];
     # Takes a random sample of training data of "batchSize" elements.

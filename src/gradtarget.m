@@ -11,29 +11,28 @@ function [gW1,gW2]=gradtarget(W1,W2,X,Y)
 # W2: weights matrix between the hidden and the output layer
 # X:  training set holding on the rows the input data, plus a final column 
 #     equal to 1
-# Y:  labels of the training set
-
+# Y: labels of the training set
 
     # First layer calculations:
-    y1 = X * W1';
+    y1=X*W1';
+
     sigmoid1 = sigmoid(y1);
-    sigmoid_biased = [ones(rows(sigmoid1), 1), sigmoid1]; # Bias of the second layer contemplated.
-    size(sigmoid1)
-    # Second layer calculations:
-    y2 = sigmoid1 * W2';
-    Y_out = sigmoid(y2);
+    sigmoid_biased=[ones(rows(sigmoid1),1),sigmoid1]; # Bias of the second layer contemplated.
+
+    y2 = sigmoid_biased * W2';
+    Y_out = sigmoid(y2); 
 
     # Error in the final layer:
-    error_out = abs(Y - Y_out); 
-    delta_Sum = error_out * W2(:, 2:end);
-    # Error in the hidden layer:    
-    error_hidden = sigmoidPrim(sigmoid1) .* delta_Sum; # Not counting the bias.
+    error_out=abs(Y-Y_out);
 
-    m = rows(X) # Normalization factor
+    delta_out = error_out * W2(:, 2:end); # Not counting the bias.
+    error_hidden = sigmoidPrim(sigmoid1) .* delta_out;
+
+    m=rows(X); # Normalization factor
 
     # Normalized:
-    gW1 = (error_hidden' * X) ./ m;
-    gW2 = (error_out' * sigmoid1) ./ m; 
+    gW1 = (error_hidden'*X) ./ m;
+    gW2 = (error_out' * sigmoid_biased) ./ m;
 
 endfunction;
 
