@@ -27,7 +27,7 @@ function [W1, W2]=training(W1, W2, X, Y, lambda, batchSize)
     XY_samples = XY(randi(length(XY), batchSize, 1), :);
     # Split the sample into X and Y matrixes:
     X_samples = XY_samples(:, 1:columns(X));
-    Y_samples = XY_samples(:, columns(X) + 1:end);
+    Y_samples = XY_samples(:, (columns(X) + 1):end);
 
     # Perform Backpropagation until reaching the desired treshold:
     do
@@ -37,17 +37,35 @@ function [W1, W2]=training(W1, W2, X, Y, lambda, batchSize)
         [gW1, gW2] = gradtarget(W1, W2, X_samples, Y_samples);
 
         w = packweight(W1, W2); # Packs the weight matrixes into a single vector.
-        gw = packweight(gW1, gW2); # Packs the gradient matrixes into a single vector.
-         # Adjusts the current weight vector according to the gradient and learning rate:
+        gw = packweight(gW1, gW2);
         w = w - lambda * gw;
 
-        # Unpacks the weight vector into two weight matrixes:
         [W1, W2] = unpackweight(w, size(W1), size(W2));
 
-        J = target(W1, W2, X, Y); # Recalculates the error for the adjusted weights.
-    until(abs(J - J_inicial) <= treshold);
+        J = target(W1, W2, X, Y);
+    until(abs(J - J_1) < treshold);
+    J
+    loops
 
-endfunction
+endfunction;
+
+function [W1,W2]=unpackweight(w, size_W1, size_W2)
+
+# Usage: unpackweight(w, rows_W1, columns_W1)
+# 
+# Unpacks the W vector into 2 weight matrix (W1 and W2). 
+# 
+# W1: Weights matrix between input and hidden layers.
+# W2: Weights matrix between the hidden and the output layers.
+
+    rows_W1 = size_W1(1, 1); # Number of rows in W1.
+    columns_W1 = size_W1(1, 2); # Number of columns in W1.
+    rows_W2 = size_W2(1, 1); # Number of rows in W2.
+    columns_W2 = size_W2(1, 2); # Number of columns in W2.
+    W1 = reshape(w(1:(rows_W1 * columns_W1)), rows_W1, columns_W1);
+    W2 = reshape(w(rows_W1 * columns_W1 +1:rows(w)), rows_W2, columns_W2);
+
+endfunction;
 
 function w=packweight(W1, W2)
 
