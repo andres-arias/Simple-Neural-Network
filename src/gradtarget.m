@@ -13,25 +13,21 @@ function [gW1,gW2]=gradtarget(W1,W2,X,Y)
 #     equal to 1
 # Y:  labels of the training set
 
-    # Adds a 1 as bias if X has less than 3 elements.
-    if(columns(X) < 3)
-        X = [ones(rows(X), 1), X];
-    endif;
 
     # First layer calculations:
     y1 = X * W1';
     sigmoid1 = sigmoid(y1);
-    sigmoid1 = [ones(rows(sigmoid1), 1), sigmoid1]; # Bias of the second layer contemplated.
-
+    sigmoid_biased = [ones(rows(sigmoid1), 1), sigmoid1]; # Bias of the second layer contemplated.
+    size(sigmoid1)
     # Second layer calculations:
     y2 = sigmoid1 * W2';
     Y_out = sigmoid(y2);
 
     # Error in the final layer:
-    error_out = Y - Y_out; 
-    # Error in the hidden layer:
-    error_hidden = sigmoidPrim(sigmoid1) .* (error_out * W2(:, 2:end)); # Not counting the bias.
-    #error_hidden = sigmoidPrim(sigmoid1) .* (error_out * W2); # Not counting the bias.
+    error_out = abs(Y - Y_out); 
+    delta_Sum = error_out * W2(:, 2:end);
+    # Error in the hidden layer:    
+    error_hidden = sigmoidPrim(sigmoid1) .* delta_Sum; # Not counting the bias.
 
     m = rows(X) # Normalization factor
 

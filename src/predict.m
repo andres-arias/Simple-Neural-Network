@@ -9,11 +9,6 @@ function y=predict(W1,W2,X)
 # W1: weights matrix between input and hidden layer
 # W2: weights matrix between the hidden and the output layer
 # X:  Input vector, extended at its end with a 1
-    
-    # Adds a 1 as bias if X has less than 3 elements.
-    if (columns(X) < 3)
-        X = [ones(rows(X), 1), X];
-    endif;
 
     # First layer calculations:
     y1 = X * W1';
@@ -23,6 +18,7 @@ function y=predict(W1,W2,X)
     # Second layer calculations:
     y2 = sigmoid1 * W2';
     y = sigmoid(y2);
+
 
 endfunction;
 
