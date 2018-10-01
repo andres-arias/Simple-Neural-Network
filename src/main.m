@@ -31,7 +31,7 @@ y=target(W1,W2,X1,Y);
 
 
 #training
-
+Xtrain,Ytrain]=create_data(size^2,class,distribution);
 [tW1,tW2]=training(W1,W2,Xtrain,Ytrain,lambda);
 
 #calculo predict 
