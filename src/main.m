@@ -1,42 +1,45 @@
 pkg load optim;
 
-
 #change distribution
-distribution="radial";
-#distribution="pie";
-#distribution="horizontal";
-#distribution="vertical";
+%distribution="radial";
+%distribution="pie";
+%distribution="horizontal";
+distribution="vertical";
 
-#chancce class and samples
-size=100;
-class=4;
+#chancce class, samples and lambda
+dSize=100;
+DClass=3;
+lambda=5;
 
+
+batchSize=1;
 
 #crear datos
-[X,Y]=create_data(size^2,class,distribution);
+[X,Y]=create_data(10000,DClass,distribution);
 
 #X with ones
 X1=[ones(rows(X),1),X];
 
+
 #Create initial weights
 NumNeuron=4;
 W1=weight(NumNeuron,columns(X1));
-W2=weight(columns(Y),rows(W1)+1)
+W2=weight(columns(Y),rows(W1)+1);
 
-#Calculo de target
-y=target(W1,W2,X1,Y);
+#target
+%y=target(W1,W2,X1,Y);
 
-#Calculo de gradtarget
-[gW1,gW2]=gradtarget(W1,W2,X1,Y)
+#gradtarget
+%[gW1,gW2]=gradtarget(W1,W2,X1,Y);
 
 
 #training
-Xtrain,Ytrain]=create_data(size^2,class,distribution);
-[tW1,tW2]=training(W1,W2,Xtrain,Ytrain,lambda);
+[tW1,tW2]=training(W1,W2,X,Y,lambda,batchSize);
 
 #calculo predict 
-Y=predict(tW1,tW2,X1);
+  %ys=predict(tW1,tW2,X1);
 
 
 #Visualizacion de datos
-view(Y,size);
+plot_data(X,Y);
+view(tW1,tW2,dSize);
